@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ 
+  <script type="application/javascript">
+  var link = new Image();
+	link.src = "lunk.png";
+  var dlink = new Image();
+	dlink.src = "dlunk.png";
+	var sdlink = new Image();
+	sdlink.src = "sdlunk.png";
+	var slink = new Image();
+	slink.src = "slunk.png";
+	var swing = new Image();
+	swing.src = "swing.png";
+	var dswing = new Image();
+	dswing.src = "dswing.png";
+	var koopa = new Image();
+	koopa.src = "shell.png";
+	var dkoopa = new Image();
+	dkoopa.src = "dshell.png";
+	var bg = new Image();
+	bg.src = "background.png";
+	var boss = new Image();
+	boss.src = "kingkrool.png";
+	var cage = new Image();
+	cage.src = "cage.png";
+	var shellstack = new Image();
+	shellstack.src = "shellstack.png";
+	var sonic = new Image();
+	sonic.src = "sanic.png";
+	var strikesound = new Audio("strike.ogg");
+  function draw(){
+	var x =0;
+	var y = 678;
+	var koopashell = [{
+		x: 125,
+		y:60}] 
+	var right = false;
+	var left = false;
+	var debug = false;
+	var up = false;
+	var strike = false;
+	var levelone = true;
+	var leveltwo = true;
+	var levelthree = false;
+	var levelfour = true;
+	var rightfacing = true;
+	var linkdeath = 0;
+	
+	var attack = 0;
+	var canvas = document.getElementById("dklink");
+	var ctx = canvas.getContext("2d");
+	var koopaframe = 0;
+	var intervalID = window.setInterval(ctxMove, 30);
+	function ctxMove(){
+	ctx.clearRect(0,0,900,900);
+		ctx.drawImage(bg,0,0);
+		if(attack >0){
+			attack = attack -1;
+			}
+		if (attack === 0 && strike){
+			for (var counter = 0; counter < koopashell.length; counter++){
+				var ypos = y - koopashell[counter].y;
+				
+				if (rightfacing === false){
+					var j = (Math.abs(koopashell[counter].x - (x - 10)) );
+					
+				} else {
+					var j = (Math.abs(koopashell[counter].x - (x + 10)));
+				
+				}
+				
+				if (attack ===0 && strike && j <  35 && ypos < 30 ) {
+					koopashell[counter].x = 0;
+					koopashell[counter].y = 700;
+				
+				
+				
+				}
+			}
+			attack = 20
+		}
+		for (var counter = 0; counter < koopashell.length; counter++){
+			var k = (Math.abs(koopashell[counter].x - x) + Math.abs(koopashell[counter].y-y-2));
+			
+			if (k < 15) {
+				x = 0;
+				y = 678;
+				levelone = true;
+				leveltwo = true;
+				levelthree = false;
+				levelfour = true;
+				linkdeath = linkdeath + 1;
+			}
+		}	
+		for (var counter = 0; counter < koopashell.length; counter++){
+			if (koopashell[counter].y < 104 ){
+				koopashell[counter].y = koopashell[counter].y +.5;
+				}
+			else if (koopashell[counter].y < 200){
+				koopashell[counter].y = koopashell[counter].y +.5;
+				koopashell[counter].x = koopashell[counter].x +2;
+				}
+			else if (koopashell[counter].y < 285 ){
+				koopashell[counter].y = koopashell[counter].y +.5;
+			}
+			else if ( koopashell[counter].y < 348){
+				koopashell[counter].y = koopashell[counter].y +.5;
+				koopashell[counter].x = koopashell[counter].x-2;
+				}
+			else if (koopashell[counter].y < 408 ){
+				koopashell[counter].y = koopashell[counter].y +.5;
+				}
+			else if ( koopashell[counter].y < 480){
+				koopashell[counter].y = koopashell[counter].y +.5;
+				koopashell[counter].x = koopashell[counter].x +2;
+				}
+			else if ( koopashell[counter].y < 545){
+				koopashell[counter].y = koopashell[counter].y +.5;
+				}
+			else {
+				koopashell[counter].y = koopashell[counter].y +.5;
+				koopashell[counter].x = koopashell[counter].x-2;
+				}
+			}
+			
+		/* First line */
+		if (right && x<680 && levelone && linkdeath <5){
+			x = x+2;
+			y = y-.5
+			rightfacing = true;
+		}
+		if (left && x>0 && levelone){
+			x = x-2;
+			y = y+.5;
+		rightfacing = false;
+		}
+		if(x>537 && x<546 && 470 < y &&up){
+			y = y-1.5;
+			levelone = false
+			}
+		/* Second line*/
+		if(right && y < 472 &&  x < 550  && leveltwo){
+			x = x+2;
+			y = y+.5;
+			rightfacing = true;
+		}
+		if(left && y<472 && 240 < x&& leveltwo){
+			x = x-2;
+			y = y-.5;
+			rightfacing = false;
+		}
+		if(x>245 && x<255 && 345 < y && y < 500 &&up){
+			y = y-1.5;
+			leveltwo = false;
+			levelthree= true;
+			}
+			/* Third line */
+		if (right && y<348 && x<570 && levelthree){
+			x = x+2;
+			y = y-.5;
+			rightfacing = true;
+		}
+		if (left && x>242 && y<348&& levelthree){
+			x = x-2;
+			y = y+.5;
+			rightfacing = false;
+		}
+		if(x>500 && x<515 && 195 < y && y< 300 && up){
+			y = y-1.5;
+			levelthree = false
+			}
+			/*BOSS BATTLE*/
+		
+		if(right && y < 196 &&  x < 516&& levelfour){
+			x = x+2;
+			y = y+.5;
+			rightfacing = true;
+		}
+		if(left && y<196 && 110 < x ){
+			x = x-2;
+			y = y-.5;
+			rightfacing = false;
+		}
+		if(left && x < 111 && y<120){
+		x = x-2;
+		levelfour = false;
+		}
+		
+		/*if (right){
+		x = x+2;
+		y = y-.5;
+		}
+		if (left) {
+		x = x-2;
+		y = y-.5;
+		}
+		if (up) {
+		y = y-1.5;
+		} */
+		
+		koopaframe = koopaframe+1;
+		var koopadd = Math.random();
+		if (koopadd < .015){
+			koopashell.push({
+				x: 125,
+				y:60});
+			}
+		for (var counter = 0; counter < koopashell.length; counter++){
+		if(koopaframe%2){
+			ctx.drawImage(koopa, koopashell[counter].x, koopashell[counter].y);
+			} else {
+				ctx.drawImage(dkoopa, koopashell[counter].x, koopashell[counter].y);
+			}
+		}
+		
+		
+		if(rightfacing ===false && attack >15){
+			ctx.drawImage(dswing,x-10, y-5);
+			ctx.drawImage(dlink,x,y);
+			strikesound.play();
+		}
+		else if(rightfacing && attack > 15 ){
+			ctx.drawImage(slink,x,y);
+			ctx.drawImage(swing,x+10, y-5);
+			strikesound.play();
+		} else if(rightfacing&& attack<16){
+			ctx.drawImage(link,x,y);
+		}	 else if(rightfacing ===false){
+		ctx.drawImage(dlink,x,y);
+			
+		}
+		ctx.font="24px Georgia";
+		
+		ctx.drawImage(sonic,196,27);
+		ctx.fillStyle = 'blue';
+		if (x < 0){
+			ctx.fillText("You have saved Ice cap zone.  Thanks Zelda." ,150,90);
+			}
+		else if(linkdeath <5){
+			ctx.fillText("Lives - "+ (5-linkdeath) ,100,260);
+			ctx.drawImage(boss,40,40);
+			ctx.drawImage(shellstack,43,3)
+			ctx.drawImage(cage,180,20);
+			}
+		else {
+			ctx.fillText("You had one job.",150,300);
+			ctx.drawImage(boss,40,40);
+			ctx.drawImage(shellstack,43,3)
+			ctx.drawImage(cage,180,20);
+			}
+			
+	
+	}
+	window.onkeydown  = function(e) {
+			var key = e.which 
+
+			if (key == 39) {
+				
+				right = true;
+			}
+			if (key == 37 ) {
+				
+				left = true;
+			}
+			if (key == 38) {
+				up = true;
+				}
+			if (key == 32) {
+			strike = true;
+			}
+			
+
+		}
+		window.onkeyup = function(e) {
+			var key = e.which 
+
+			if (key == 39) {
+				
+				right = false;
+			}
+			if (key == 37) {
+				
+				left = false;
+			}	if (key == 38) {
+				up = false;
+				}
+			if (key == 32) {
+				strike = false
+			}
+
+	}
+  }
+  
+  
+  </script>
+   
+ <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+ </head>
+ <body onload="draw();">
+   <canvas id="dklink" width="700" height="700"></canvas>
+ </body>
+</html>
